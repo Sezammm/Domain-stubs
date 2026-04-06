@@ -1,0 +1,19 @@
+
+in PowerShell:
+
+cd E:\Site\domains
+
+
+
+
+
+python -m http.server 8001
+
+============================
+Open:
+http://localhost:8001
+
+
+
+
+cd E:\Site\domains
