@@ -1,240 +1,375 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - Page Not Found</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="icon" type="image/webp" href="favicon.webp">
+
+  <title>Boat Clock</title>
 
   <style>
-    :root {
-      --bg-color: #010005;
-      --text-color: #eaf3ff;
-      --muted-color: #9db3cc;
-      --button-text: #f3f8ff;
-    }
-
     * {
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      height: 100%;
+    html, body {
       margin: 0;
-    }
-
-    body {
-      position: relative;
-      overflow-x: hidden;
-      overflow-y: auto;
-      font-family: Arial, Helvetica, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-    }
-
-    .hero-404 {
-      position: absolute;
-      top: 70px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1100px, 92vw);
-      aspect-ratio: 16 / 9;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .hero-image {
-      display: block;
       width: 100%;
       height: 100%;
-      object-fit: contain;
-      user-select: none;
-      -webkit-user-drag: none;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #000;
     }
 
-    .lure-glow,
-    .number-glow {
-      position: absolute;
+    body {
+      position: relative;
+    }
+
+    /* Фон */
+    .scene {
+      position: fixed;
+      inset: 0;
+      background: url("images/boat.webp") center center / cover no-repeat;
+    }
+
+    /* Слой звезд */
+    .stars {
+      position: fixed;
       inset: 0;
       pointer-events: none;
+      overflow: hidden;
+      z-index: 2;
     }
 
-    /* Свечение лампы рыбы — привязано к картинке */
-    .lure-glow {
-      background:
-        radial-gradient(circle at 57% 38%,
-        rgba(255, 255, 255, 1) 0,
-        rgba(235, 245, 255, 1) 0.7%,
-        rgba(200, 230, 255, 0.95) 2%,
-        rgba(180, 220, 255, 0.55) 5%,
-        rgba(180, 220, 255, 0.25) 9%,
-        rgba(180, 220, 255, 0.08) 14%,
-          transparent 22%);
-      animation: lureGlow 2.5s ease-in-out infinite;
-      filter: brightness(1.15);
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      opacity: 0.85;
+      animation: twinkle linear infinite;
+      box-shadow:
+        0 0 4px rgba(255,255,255,0.7),
+        0 0 8px rgba(180,220,255,0.5);
     }
 
-    /* Мягкая подсветка цифр 404 */
-    .number-glow {
-      background:
-        radial-gradient(circle at 42% 42%,
-          rgba(180, 220, 255, 0.14) 0,
-          rgba(120, 180, 255, 0.07) 8%,
-          rgba(80, 120, 220, 0.03) 16%,
-          transparent 25%);
-      animation: numberGlow 5.5s ease-in-out infinite;
-    }
-
-    @keyframes lureGlow {
-      0% {
-        opacity: 0;
-      }
-
-      40% {
-        opacity: 1;
-      }
-
-      100% {
-        opacity: 0;
-      }
-    }
-
-    @keyframes numberGlow {
+    @keyframes twinkle {
       0%, 100% {
-        opacity: 0.55;
+        opacity: 0.18;
+        transform: scale(0.8);
       }
       50% {
-        opacity: 0.84;
+        opacity: 0.95;
+        transform: scale(1.25);
       }
     }
 
-    .page-404 {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
+    /* Легкие светящиеся частицы */
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .spark {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(140, 200, 255, 0.95);
+      box-shadow:
+        0 0 6px rgba(140, 200, 255, 0.9),
+        0 0 14px rgba(140, 200, 255, 0.55);
+      animation: floatSpark linear infinite;
+    }
+
+    @keyframes floatSpark {
+      0% {
+        transform: translateY(0) translateX(0) scale(0.7);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120px) translateX(30px) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Контейнер часов */
+    .clock-wrap {
+      position: fixed;
+      left: 50%;
+      top: 15%;
+      transform: translateX(-50%);
+      z-index: 10;
       display: flex;
-      align-items: flex-end;
       justify-content: center;
-      text-align: center;
-      padding: 40px 20px 56px;
-    }
-
-    .content {
-      max-width: 950px;
-    }
-
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(36px, 5vw, 56px);
-      line-height: 1.05;
-      letter-spacing: 0.02em;
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
-    }
-
-    p {
-      margin: 0 0 22px;
-      font-size: clamp(16px, 2vw, 20px);
-      line-height: 1.6;
-      color: var(--muted-color);
-      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
-      white-space: nowrap;
-      letter-spacing: 0.2px;
-    }
-
-    .home-button {
-      display: inline-block;
-      padding: 14px 26px;
-      border-radius: 12px;
-      border: 1px solid rgba(180, 220, 255, 0.20);
-      background: rgba(255,255,255,0.06);
-      color: var(--button-text);
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 600;
-      transition:
-        background 0.3s ease,
-        transform 0.2s ease,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
-    }
-
-    .home-button:hover {
-      background: rgba(180, 220, 255, 0.15);
-      border-color: rgba(180, 220, 255, 0.45);
+      align-items: center;
+      padding: 18px 26px;
+      border-radius: 24px;
+      background: rgba(0, 0, 0, 0.14);
+      backdrop-filter: blur(1px);
       box-shadow:
-        0 0 12px rgba(180, 220, 255, 0.35),
-        0 0 28px rgba(180, 220, 255, 0.15);
-      transform: translateY(-2px);
+        0 0 20px rgba(0, 255, 0, 0.08),
+        inset 0 0 20px rgba(0, 0, 0, 0.15);
     }
 
-    .home-button:active {
-      transform: translateY(0);
-      background: rgba(180, 220, 255, 0.22);
+    .clock {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform-origin: center;
+      user-select: none;
+    }
+
+    /* Двоеточие */
+    .colon {
+      position: relative;
+      width: 26px;
+      height: 120px;
+      margin: 0 2px;
+    }
+
+    .colon::before,
+    .colon::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background: #00ff00;
       box-shadow:
-        0 0 8px rgba(180, 220, 255, 0.35),
-        inset 0 0 12px rgba(180, 220, 255, 0.25);
+        0 0 10px #00ff00,
+        0 0 20px #00ff00,
+        0 0 35px rgba(0,255,0,0.95);
+      animation: pulseGlow 1s infinite ease-in-out;
     }
 
-
-    @media (max-width: 900px) {
-      .hero-404 {
-        top: 36px;
-        width: min(1000px, 96vw);
-      }
-
-      .page-404 {
-        min-height: 100svh;
-        padding: 34px 20px 42px;
-      }
+    .colon::before {
+      top: 28px;
     }
 
+    .colon::after {
+      bottom: 28px;
+    }
 
-
-    @media (max-width: 600px) {
-      .hero-404 {
-        top: 12px;
-        width: 122vw;
-        max-width: none;
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.72;
       }
-
-      .page-404 {
-        min-height: 100svh;
-        align-items: flex-start;
-        justify-content: center;
-        padding: 74vw 16px calc(28px + env(safe-area-inset-bottom));
-      }
-
-      .content {
-        max-width: 100%;
-      }
-
-      p {
-        margin-bottom: 18px;
-        white-space: normal;
-      }
-
-      .home-button {
-        width: 100%;
-        max-width: 280px;
+      50% {
+        opacity: 1;
       }
     }
 
+    /* Цифра */
+    .digit {
+      position: relative;
+      width: 72px;
+      height: 120px;
+      filter:
+        drop-shadow(0 0 3px rgba(0,255,0,0.8))
+        drop-shadow(0 0 8px rgba(0,255,0,0.6))
+        drop-shadow(0 0 15px rgba(0,255,0,0.4));
+    }
 
+    .seg {
+      position: absolute;
+      opacity: 0.06;
+      transition: opacity 0.15s ease;
+      background: rgba(0, 255, 0, 0.18);
+    }
+
+    .seg.on {
+      opacity: 1;
+      background: #00ff00;
+      box-shadow:
+        0 0 6px #00ff00,
+        0 0 14px #00ff00,
+        0 0 22px rgba(0,255,0,0.9);
+    }
+
+    /* Горизонтальные сегменты */
+    .seg.a, .seg.d, .seg.g {
+      width: 44px;
+      height: 12px;
+      left: 14px;
+      clip-path: polygon(
+        12% 0%,
+        88% 0%,
+        100% 50%,
+        88% 100%,
+        12% 100%,
+        0% 50%
+      );
+    }
+
+    .seg.a { top: 0; }
+    .seg.g { top: 54px; }
+    .seg.d { bottom: 0; }
+
+    /* Вертикальные сегменты */
+    .seg.b, .seg.c, .seg.e, .seg.f {
+      width: 12px;
+      height: 44px;
+      clip-path: polygon(
+        0% 12%,
+        50% 0%,
+        100% 12%,
+        100% 88%,
+        50% 100%,
+        0% 88%
+      );
+    }
+
+    .seg.f { left: 0; top: 8px; }
+    .seg.b { right: 0; top: 8px; }
+    .seg.e { left: 0; bottom: 8px; }
+    .seg.c { right: 0; bottom: 8px; }
+
+    /* Адаптивность */
+    @media (max-width: 1100px) {
+      .clock-wrap {
+        top: 12%;
+        transform: translateX(-50%) scale(0.82);
+      }
+    }
+
+    @media (max-width: 780px) {
+      .clock-wrap {
+        top: 10%;
+        transform: translateX(-50%) scale(0.62);
+        padding: 14px 18px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .clock-wrap {
+        top: 8%;
+        transform: translateX(-50%) scale(0.48);
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="hero-404">
-    <img src="/img/404.webp" alt="404 underwater illustration" class="hero-image">
-    <div class="lure-glow"></div>
-    <div class="number-glow"></div>
+
+  <div class="scene"></div>
+  <div class="stars" id="stars"></div>
+  <div class="sparkles" id="sparkles"></div>
+
+  <div class="clock-wrap">
+    <div class="clock" id="clock">
+      <div class="digit"></div>
+      <div class="digit"></div>
+      <div class="colon"></div>
+      <div class="digit"></div>
+      <div class="digit"></div>
+      <div class="colon"></div>
+      <div class="digit"></div>
+      <div class="digit"></div>
+    </div>
   </div>
 
-  <main class="page-404">
-    <div class="content">
-      <h1>Page not found</h1>
-      <p>The page you are looking for may have been moved, removed, or never existed.</p>
-      <a class="home-button" href="/">Back to Homepage</a>
-    </div>
-  </main>
+  <script>
+    const segmentMap = {
+      0: ['a', 'b', 'c', 'd', 'e', 'f'],
+      1: ['b', 'c'],
+      2: ['a', 'b', 'g', 'e', 'd'],
+      3: ['a', 'b', 'g', 'c', 'd'],
+      4: ['f', 'g', 'b', 'c'],
+      5: ['a', 'f', 'g', 'c', 'd'],
+      6: ['a', 'f', 'g', 'e', 'c', 'd'],
+      7: ['a', 'b', 'c'],
+      8: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+      9: ['a', 'b', 'c', 'd', 'f', 'g']
+    };
+
+    function createDigitStructure() {
+      document.querySelectorAll('.digit').forEach(digit => {
+        ['a', 'b', 'c', 'd', 'e', 'f', 'g'].forEach(name => {
+          const seg = document.createElement('div');
+          seg.className = `seg ${name}`;
+          seg.dataset.seg = name;
+          digit.appendChild(seg);
+        });
+      });
+    }
+
+    function setDigit(el, number) {
+      const active = segmentMap[number] || [];
+      el.querySelectorAll('.seg').forEach(seg => {
+        seg.classList.toggle('on', active.includes(seg.dataset.seg));
+      });
+    }
+
+    function updateClock() {
+      const now = new Date();
+
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const ss = String(now.getSeconds()).padStart(2, '0');
+
+      const str = hh + mm + ss;
+      const digits = document.querySelectorAll('.digit');
+
+      [...str].forEach((ch, i) => {
+        setDigit(digits[i], Number(ch));
+      });
+    }
+
+    function createStars(count = 90) {
+      const stars = document.getElementById('stars');
+
+      for (let i = 0; i < count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+
+        const size = Math.random() * 2.6 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+
+        star.style.animationDuration = `${2 + Math.random() * 4}s`;
+        star.style.animationDelay = `${Math.random() * 5}s`;
+
+        stars.appendChild(star);
+      }
+    }
+
+    function createSparkles(count = 24) {
+      const sparkles = document.getElementById('sparkles');
+
+      for (let i = 0; i < count; i++) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+
+        spark.style.left = `${10 + Math.random() * 80}%`;
+        spark.style.top = `${55 + Math.random() * 35}%`;
+
+        spark.style.animationDuration = `${5 + Math.random() * 7}s`;
+        spark.style.animationDelay = `${Math.random() * 8}s`;
+
+        sparkles.appendChild(spark);
+      }
+    }
+
+    createDigitStructure();
+    createStars();
+    createSparkles();
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
+
 </body>
 </html>
