@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Sezam</title>
+  <title>Fog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -157,6 +157,85 @@
       filter: blur(62px);
     }
 
+    /* Призрачная ладонь */
+    .hand-slam {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 300px;
+      height: 360px;
+      opacity: 0;
+      pointer-events: none;
+      filter: blur(18px);
+      mix-blend-mode: multiply;
+      will-change: transform, opacity, filter;
+    }
+
+    .hand-inner {
+      position: absolute;
+      inset: 0;
+      will-change: transform;
+    }
+
+    .palm {
+      position: absolute;
+      left: 96px;
+      top: 98px;
+      width: 110px;
+      height: 122px;
+      border-radius: 46% 46% 42% 42% / 44% 44% 36% 36%;
+      background: rgba(6, 9, 13, 0.80);
+      filter: blur(20px);
+    }
+
+    .finger {
+      position: absolute;
+      width: 28px;
+      border-radius: 50px;
+      background: rgba(5, 8, 12, 0.84);
+      filter: blur(12px);
+      transform-origin: center bottom;
+    }
+
+    .finger.f1 { left: 92px; top: 20px; height: 116px; transform: rotate(-10deg); }
+    .finger.f2 { left: 124px; top: 6px; height: 134px; transform: rotate(-4deg); }
+    .finger.f3 { left: 156px; top: 2px; height: 138px; transform: rotate(2deg); }
+    .finger.f4 { left: 188px; top: 18px; height: 120px; transform: rotate(9deg); }
+
+    .thumb {
+      position: absolute;
+      left: 46px;
+      top: 126px;
+      width: 74px;
+      height: 42px;
+      border-radius: 42px;
+      background: rgba(5, 8, 12, 0.78);
+      filter: blur(14px);
+      transform: rotate(-32deg);
+    }
+
+    .hand-aura-1,
+    .hand-aura-2 {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(5, 8, 12, 0.34);
+      filter: blur(42px);
+    }
+
+    .hand-aura-1 {
+      left: 54px;
+      top: 56px;
+      width: 190px;
+      height: 210px;
+    }
+
+    .hand-aura-2 {
+      left: 22px;
+      top: 96px;
+      width: 240px;
+      height: 220px;
+    }
+
     .woman-layer {
       position: fixed;
       inset: -20px;
@@ -224,6 +303,21 @@
       .blob-8 { left: 110px; top: 164px; width: 78px; height: 218px; }
       .blob-9 { left: 92px; top: 440px; width: 120px; height: 90px; }
 
+      .hand-slam {
+        width: 230px;
+        height: 280px;
+      }
+
+      .palm { left: 72px; top: 78px; width: 82px; height: 92px; }
+      .finger { width: 20px; }
+      .finger.f1 { left: 68px; top: 18px; height: 84px; }
+      .finger.f2 { left: 92px; top: 6px; height: 98px; }
+      .finger.f3 { left: 116px; top: 4px; height: 100px; }
+      .finger.f4 { left: 140px; top: 16px; height: 88px; }
+      .thumb { left: 34px; top: 104px; width: 56px; height: 30px; }
+      .hand-aura-1 { left: 42px; top: 42px; width: 140px; height: 150px; }
+      .hand-aura-2 { left: 12px; top: 72px; width: 180px; height: 160px; }
+
       .email {
         right: 40px;
         bottom: 40px;
@@ -250,6 +344,21 @@
       .blob-7 { right: 0px; top: 104px; width: 68px; height: 138px; }
       .blob-8 { left: 68px; top: 100px; width: 50px; height: 140px; }
       .blob-9 { left: 58px; top: 274px; width: 82px; height: 58px; }
+
+      .hand-slam {
+        width: 160px;
+        height: 190px;
+      }
+
+      .palm { left: 50px; top: 56px; width: 58px; height: 64px; }
+      .finger { width: 14px; filter: blur(10px); }
+      .finger.f1 { left: 48px; top: 12px; height: 58px; }
+      .finger.f2 { left: 66px; top: 4px; height: 68px; }
+      .finger.f3 { left: 84px; top: 4px; height: 70px; }
+      .finger.f4 { left: 102px; top: 12px; height: 60px; }
+      .thumb { left: 24px; top: 76px; width: 38px; height: 20px; }
+      .hand-aura-1 { left: 28px; top: 28px; width: 96px; height: 104px; }
+      .hand-aura-2 { left: 8px; top: 54px; width: 124px; height: 112px; }
 
       .email {
         right: 20px;
@@ -282,6 +391,19 @@
           </div>
         </div>
       </div>
+
+      <div class="hand-slam" id="handSlam">
+        <div class="hand-inner" id="handInner">
+          <div class="hand-aura-1"></div>
+          <div class="hand-aura-2"></div>
+          <div class="palm"></div>
+          <div class="finger f1"></div>
+          <div class="finger f2"></div>
+          <div class="finger f3"></div>
+          <div class="finger f4"></div>
+          <div class="thumb"></div>
+        </div>
+      </div>
     </div>
 
     <div class="woman-layer" id="womanCutout"></div>
@@ -301,6 +423,8 @@
     const ghost = document.getElementById("ghost");
     const ghostInner = document.getElementById("ghostInner");
     const womanCutout = document.getElementById("womanCutout");
+    const handSlam = document.getElementById("handSlam");
+    const handInner = document.getElementById("handInner");
 
     let mouseX = 0;
     let mouseY = 0;
@@ -337,6 +461,14 @@
       return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
     function getGhostSize() {
       if (window.innerWidth <= 768) return { w: 200, h: 390 };
       if (window.innerWidth <= 1024) return { w: 320, h: 620 };
@@ -347,20 +479,19 @@
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const size = getGhostSize();
-
       const isLeft = Math.random() < 0.5;
       let xPercent;
       let yPercent;
 
       if (window.innerWidth <= 768) {
         xPercent = isLeft ? rand(18, 30) : rand(70, 82);
-        yPercent = rand(18, 58);
+        yPercent = rand(30, 72);
       } else if (window.innerWidth <= 1024) {
         xPercent = isLeft ? rand(18, 32) : rand(68, 82);
-        yPercent = rand(14, 60);
+        yPercent = rand(26, 74);
       } else {
         xPercent = isLeft ? rand(18, 34) : rand(66, 82);
-        yPercent = rand(12, 62);
+        yPercent = rand(24, 76);
       }
 
       return {
@@ -372,7 +503,7 @@
 
     function setGhostMood() {
       const blur = rand(34, 48);
-      const peak = rand(0.28, 0.48);
+      const peak = rand(0.30, 0.52);
       const scale = rand(1.08, 1.24);
 
       ghost.dataset.peak = peak.toFixed(3);
@@ -381,7 +512,7 @@
 
       const blobs = ghost.querySelectorAll(".blob");
       blobs.forEach(blob => {
-        blob.style.opacity = (0.90 + Math.random() * 0.26).toFixed(2);
+        blob.style.opacity = (0.92 + Math.random() * 0.26).toFixed(2);
         blob.style.transform = `translate(${rand(-14, 14).toFixed(1)}px, ${rand(-10, 10).toFixed(1)}px)`;
       });
     }
@@ -399,12 +530,12 @@
         const fadeDuration = rand(2200, 4200);
 
         const driftMainX = side === "left" ? rand(18, 58) : rand(-58, -18);
-        const driftMainY = rand(-12, 14);
+        const driftMainY = rand(-10, 18);
         const sideSwayA = rand(6, 16);
         const sideSwayB = rand(4, 14);
-        const verticalBreath = rand(3, 9);
+        const verticalBreath = rand(3, 11);
 
-        const peakOpacity = parseFloat(ghost.dataset.peak || "0.36");
+        const peakOpacity = parseFloat(ghost.dataset.peak || "0.38");
         const baseScale = parseFloat(ghost.dataset.scale || "1.12");
 
         const startTime = performance.now();
@@ -465,6 +596,7 @@
         setGhostMood();
 
         const fromLeft = Math.random() < 0.5;
+        const lowPass = Math.random() < 0.55;
         const vw = window.innerWidth;
         const vh = window.innerHeight;
 
@@ -479,17 +611,17 @@
         }
 
         if (window.innerWidth <= 768) {
-          baseY = vh * rand(0.20, 0.52);
+          baseY = lowPass ? vh * rand(0.52, 0.78) : vh * rand(0.26, 0.48);
         } else if (window.innerWidth <= 1024) {
-          baseY = vh * rand(0.16, 0.56);
+          baseY = lowPass ? vh * rand(0.50, 0.80) : vh * rand(0.24, 0.46);
         } else {
-          baseY = vh * rand(0.14, 0.60);
+          baseY = lowPass ? vh * rand(0.48, 0.80) : vh * rand(0.22, 0.44);
         }
 
-        const diag = rand(-80, 80);
+        const diag = rand(-110, 110);
         const duration = rand(700, 1200);
-        const peakOpacity = rand(0.18, 0.32);
-        const baseScale = rand(1.02, 1.18);
+        const peakOpacity = rand(0.20, 0.34);
+        const baseScale = rand(1.02, 1.20);
 
         ghost.style.left = `${startX}px`;
         ghost.style.top = `${baseY - size.h / 2}px`;
@@ -504,7 +636,7 @@
           const y = (baseY - size.h / 2) + diag * p;
           const opacity = Math.sin(p * Math.PI) * peakOpacity;
           const wobbleX = Math.sin(p * Math.PI * 4) * 8;
-          const wobbleY = Math.sin(p * Math.PI * 3) * 4;
+          const wobbleY = Math.sin(p * Math.PI * 3) * 5;
 
           ghost.style.left = `${x}px`;
           ghost.style.top = `${y}px`;
@@ -524,26 +656,109 @@
       });
     }
 
-    function easeOutCubic(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
+    function animateHandSlam() {
+      return new Promise(resolve => {
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        const fromLeft = Math.random() < 0.5;
 
-    function easeInOutQuad(t) {
-      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        let handW, handH;
+        if (window.innerWidth <= 768) {
+          handW = 160; handH = 190;
+        } else if (window.innerWidth <= 1024) {
+          handW = 230; handH = 280;
+        } else {
+          handW = 300; handH = 360;
+        }
+
+        const baseX = fromLeft ? vw * rand(0.04, 0.18) : vw * rand(0.74, 0.88);
+        const baseY = vh * rand(0.64, 0.84);
+
+        const slamInX = fromLeft ? -rand(70, 130) : rand(70, 130);
+        const settleDriftY = rand(30, 90);
+        const settleDriftX = fromLeft ? rand(10, 28) : rand(-28, -10);
+
+        handSlam.style.left = `${baseX - handW / 2}px`;
+        handSlam.style.top = `${baseY - handH / 2}px`;
+        handSlam.style.filter = `blur(${rand(14, 22).toFixed(1)}px)`;
+
+        handInner.style.transform = fromLeft
+          ? `translate(${slamInX}px, 40px) scale(0.82)`
+          : `translate(${slamInX}px, 40px) scale(0.82) rotateY(180deg)`;
+
+        const hitDuration = rand(120, 220);
+        const holdDuration = rand(200, 500);
+        const fadeDuration = rand(1200, 2200);
+        const peakOpacity = rand(0.24, 0.40);
+
+        const startTime = performance.now();
+        const total = hitDuration + holdDuration + fadeDuration;
+
+        function frame(now) {
+          const elapsed = now - startTime;
+
+          let opacity = 0;
+          let tx = 0;
+          let ty = 0;
+          let sc = 1;
+
+          if (elapsed <= hitDuration) {
+            const p = elapsed / hitDuration;
+            const e = easeOutCubic(p);
+            opacity = peakOpacity * e;
+            tx = slamInX * (1 - e);
+            ty = 40 * (1 - e);
+            sc = 0.82 + e * 0.28;
+          } else if (elapsed <= hitDuration + holdDuration) {
+            const p = (elapsed - hitDuration) / holdDuration;
+            opacity = peakOpacity * (0.96 + Math.sin(p * Math.PI) * 0.04);
+            tx = Math.sin(p * Math.PI * 3) * 2;
+            ty = Math.sin(p * Math.PI * 2) * 2;
+            sc = 1.10 - Math.sin(p * Math.PI) * 0.02;
+          } else {
+            const p = (elapsed - hitDuration - holdDuration) / fadeDuration;
+            const e = easeInOutQuad(p);
+            opacity = peakOpacity * (1 - e);
+            tx = settleDriftX * e;
+            ty = settleDriftY * e;
+            sc = 1.08 - e * 0.10;
+          }
+
+          handSlam.style.opacity = opacity.toFixed(3);
+
+          const transformCore = fromLeft
+            ? `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${sc.toFixed(3)})`
+            : `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${sc.toFixed(3)}) rotateY(180deg)`;
+
+          handInner.style.transform = transformCore;
+
+          if (elapsed < total) {
+            requestAnimationFrame(frame);
+          } else {
+            handSlam.style.opacity = "0";
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(frame);
+      });
     }
 
     async function ghostLoop() {
       while (true) {
-        await sleep(randInt(1200, 5200));
+        await sleep(randInt(1000, 4200));
 
-        const dashChance = 0.22;
-        if (Math.random() < dashChance) {
+        const r = Math.random();
+
+        if (r < 0.18) {
+          await animateHandSlam();
+        } else if (r < 0.44) {
           await animateGhostDash();
         } else {
           await animateGhostSlow();
         }
 
-        await sleep(randInt(500, 2200));
+        await sleep(randInt(400, 1800));
       }
     }
 
