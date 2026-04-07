@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Sezam</title>
+  <title>Fog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -28,7 +28,6 @@
       overflow: hidden;
     }
 
-    /* Фон */
     .bg {
       position: fixed;
       inset: -20px;
@@ -38,16 +37,14 @@
       z-index: 0;
     }
 
-    /* Затемнение */
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.22);
+      background: rgba(0, 0, 0, 0.16);
       z-index: 1;
       pointer-events: none;
     }
 
-    /* Контейнер силуэтов */
     .ghost-layer {
       position: fixed;
       inset: 0;
@@ -56,130 +53,129 @@
       overflow: hidden;
     }
 
-    /* Общий призрачный силуэт */
+    /* Общий контейнер тени */
     .ghost {
       position: absolute;
-      width: 260px;
-      height: 560px;
+      left: 0;
+      top: 0;
+      width: 320px;
+      height: 640px;
       opacity: 0;
-      filter: blur(28px);
+      filter: blur(26px);
+      will-change: transform, opacity, filter;
       mix-blend-mode: multiply;
+    }
+
+    .ghost-inner {
+      position: absolute;
+      inset: 0;
       will-change: transform, opacity;
     }
 
-    /* Составные части силуэта */
-    .ghost::before,
-    .ghost::after {
-      content: "";
+    /* Силуэт не "человек из деталей", а облачная фигура */
+    .ghost-shape {
       position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(15, 18, 22, 0.75);
-      border-radius: 50%;
+      inset: 0;
     }
 
-    /* Голова */
-    .ghost::before {
-      top: 48px;
-      width: 100px;
-      height: 110px;
-      filter: blur(10px);
-    }
-
-    /* Тело */
-    .ghost::after {
-      top: 125px;
-      width: 180px;
-      height: 355px;
-      border-radius: 45% 45% 40% 40% / 28% 28% 55% 55%;
-      filter: blur(18px);
-    }
-
-    /* Доп. внутреннее облако для силуэта */
-    .ghost .core {
+    .blob {
       position: absolute;
-      left: 50%;
-      top: 155px;
-      transform: translateX(-50%);
-      width: 115px;
-      height: 260px;
-      background: rgba(5, 8, 12, 0.6);
       border-radius: 50%;
+      background: rgba(7, 10, 14, 0.78);
+      filter: blur(30px);
+      transform: translateZ(0);
+    }
+
+    /* Верх */
+    .blob-1 {
+      left: 104px;
+      top: 34px;
+      width: 96px;
+      height: 118px;
+      background: rgba(6, 9, 13, 0.72);
       filter: blur(24px);
     }
 
-    /* Левый силуэт */
-    .ghost-left {
-      left: 31%;
-      top: 16%;
-      animation: ghostLeftCycle 15s ease-in-out infinite;
+    /* Волосы/аура сверху */
+    .blob-2 {
+      left: 82px;
+      top: 18px;
+      width: 144px;
+      height: 170px;
+      background: rgba(4, 7, 11, 0.52);
+      filter: blur(38px);
     }
 
-    /* Правый силуэт */
-    .ghost-right {
-      left: 58%;
-      top: 15%;
-      animation: ghostRightCycle 15s ease-in-out infinite;
+    /* Плечи */
+    .blob-3 {
+      left: 46px;
+      top: 126px;
+      width: 224px;
+      height: 124px;
+      background: rgba(7, 10, 14, 0.64);
+      filter: blur(34px);
     }
 
-    @keyframes ghostLeftCycle {
-      0% {
-        opacity: 0;
-        transform: translateX(-18px) scale(0.94);
-      }
-      10% {
-        opacity: 0;
-      }
-      22% {
-        opacity: 0.22;
-        transform: translateX(-8px) scale(0.98);
-      }
-      34% {
-        opacity: 0.30;
-        transform: translateX(0px) scale(1);
-      }
-      46% {
-        opacity: 0.12;
-        transform: translateX(8px) scale(1.03);
-      }
-      56% {
-        opacity: 0;
-        transform: translateX(12px) scale(1.05);
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(12px) scale(1.05);
-      }
+    /* Торс */
+    .blob-4 {
+      left: 72px;
+      top: 182px;
+      width: 176px;
+      height: 230px;
+      background: rgba(6, 9, 13, 0.72);
+      filter: blur(32px);
     }
 
-    @keyframes ghostRightCycle {
-      0% {
-        opacity: 0;
-        transform: translateX(14px) scale(0.95);
-      }
-      50% {
-        opacity: 0;
-        transform: translateX(14px) scale(0.95);
-      }
-      62% {
-        opacity: 0.16;
-        transform: translateX(8px) scale(0.98);
-      }
-      74% {
-        opacity: 0.28;
-        transform: translateX(0px) scale(1);
-      }
-      86% {
-        opacity: 0.11;
-        transform: translateX(-8px) scale(1.03);
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(-12px) scale(1.05);
-      }
+    /* Нижняя масса */
+    .blob-5 {
+      left: 50px;
+      top: 322px;
+      width: 220px;
+      height: 236px;
+      background: rgba(5, 8, 12, 0.62);
+      filter: blur(40px);
     }
 
-    /* email */
+    /* Левый дым */
+    .blob-6 {
+      left: 18px;
+      top: 168px;
+      width: 108px;
+      height: 250px;
+      background: rgba(5, 8, 12, 0.44);
+      filter: blur(42px);
+    }
+
+    /* Правый дым */
+    .blob-7 {
+      right: 18px;
+      top: 176px;
+      width: 108px;
+      height: 238px;
+      background: rgba(5, 8, 12, 0.42);
+      filter: blur(42px);
+    }
+
+    /* Внутреннее затемнение */
+    .blob-8 {
+      left: 112px;
+      top: 170px;
+      width: 92px;
+      height: 250px;
+      background: rgba(0, 0, 0, 0.34);
+      filter: blur(32px);
+    }
+
+    /* Нижний хвост/растворение */
+    .blob-9 {
+      left: 88px;
+      top: 438px;
+      width: 150px;
+      height: 142px;
+      background: rgba(4, 6, 10, 0.34);
+      filter: blur(44px);
+    }
+
     .email {
       position: fixed;
       right: 60px;
@@ -206,45 +202,27 @@
     }
 
     @keyframes floatSmooth {
-      0%   { transform: translateY(0px); }
-      50%  { transform: translateY(-6px); }
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
       100% { transform: translateY(0px); }
     }
 
-    /* Планшеты */
     @media (max-width: 1024px) {
       .ghost {
-        width: 200px;
-        height: 430px;
-        filter: blur(24px);
+        width: 240px;
+        height: 480px;
+        filter: blur(22px);
       }
 
-      .ghost::before {
-        width: 78px;
-        height: 88px;
-      }
-
-      .ghost::after {
-        top: 105px;
-        width: 145px;
-        height: 275px;
-      }
-
-      .ghost .core {
-        top: 132px;
-        width: 92px;
-        height: 205px;
-      }
-
-      .ghost-left {
-        left: 28%;
-        top: 18%;
-      }
-
-      .ghost-right {
-        left: 60%;
-        top: 17%;
-      }
+      .blob-1 { left: 78px; top: 26px; width: 70px; height: 86px; }
+      .blob-2 { left: 58px; top: 12px; width: 106px; height: 126px; }
+      .blob-3 { left: 34px; top: 94px; width: 170px; height: 92px; }
+      .blob-4 { left: 54px; top: 138px; width: 130px; height: 174px; }
+      .blob-5 { left: 34px; top: 246px; width: 172px; height: 176px; }
+      .blob-6 { left: 8px; top: 126px; width: 78px; height: 182px; }
+      .blob-7 { right: 8px; top: 130px; width: 78px; height: 176px; }
+      .blob-8 { left: 84px; top: 128px; width: 66px; height: 190px; }
+      .blob-9 { left: 66px; top: 324px; width: 108px; height: 106px; }
 
       .email {
         right: 40px;
@@ -256,41 +234,22 @@
       }
     }
 
-    /* Телефоны */
     @media (max-width: 768px) {
       .ghost {
-        width: 140px;
-        height: 300px;
-        filter: blur(20px);
+        width: 160px;
+        height: 320px;
+        filter: blur(18px);
       }
 
-      .ghost::before {
-        top: 28px;
-        width: 52px;
-        height: 58px;
-      }
-
-      .ghost::after {
-        top: 72px;
-        width: 95px;
-        height: 190px;
-      }
-
-      .ghost .core {
-        top: 92px;
-        width: 62px;
-        height: 135px;
-      }
-
-      .ghost-left {
-        left: 18%;
-        top: 22%;
-      }
-
-      .ghost-right {
-        left: 64%;
-        top: 21%;
-      }
+      .blob-1 { left: 52px; top: 18px; width: 46px; height: 58px; }
+      .blob-2 { left: 38px; top: 8px; width: 72px; height: 84px; }
+      .blob-3 { left: 22px; top: 62px; width: 114px; height: 60px; }
+      .blob-4 { left: 36px; top: 92px; width: 88px; height: 114px; }
+      .blob-5 { left: 22px; top: 164px; width: 116px; height: 120px; }
+      .blob-6 { left: 6px; top: 84px; width: 50px; height: 120px; }
+      .blob-7 { right: 6px; top: 86px; width: 50px; height: 120px; }
+      .blob-8 { left: 56px; top: 84px; width: 44px; height: 124px; }
+      .blob-9 { left: 48px; top: 218px; width: 70px; height: 64px; }
 
       .email {
         right: 20px;
@@ -304,17 +263,25 @@
   </style>
 </head>
 <body>
-
   <div class="scene">
     <div class="bg" id="bg"></div>
     <div class="overlay"></div>
 
-    <div class="ghost-layer" id="ghostLayer">
-      <div class="ghost ghost-left" id="ghostLeft">
-        <div class="core"></div>
-      </div>
-      <div class="ghost ghost-right" id="ghostRight">
-        <div class="core"></div>
+    <div class="ghost-layer">
+      <div class="ghost" id="ghost">
+        <div class="ghost-inner" id="ghostInner">
+          <div class="ghost-shape">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+            <div class="blob blob-4"></div>
+            <div class="blob blob-5"></div>
+            <div class="blob blob-6"></div>
+            <div class="blob blob-7"></div>
+            <div class="blob blob-8"></div>
+            <div class="blob blob-9"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -328,8 +295,8 @@
   <script>
     const bg = document.getElementById("bg");
     const email = document.getElementById("email");
-    const ghostLeft = document.getElementById("ghostLeft");
-    const ghostRight = document.getElementById("ghostRight");
+    const ghost = document.getElementById("ghost");
+    const ghostInner = document.getElementById("ghostInner");
 
     let mouseX = 0;
     let mouseY = 0;
@@ -348,17 +315,189 @@
       bg.style.transform = `translate(${currentX * 8}px, ${currentY * 8}px) scale(1.02)`;
       email.style.transform = `translate(${currentX * 14}px, ${currentY * 14}px)`;
 
-      ghostLeft.style.marginLeft = `${currentX * 10}px`;
-      ghostLeft.style.marginTop = `${currentY * 6}px`;
-
-      ghostRight.style.marginLeft = `${currentX * 12}px`;
-      ghostRight.style.marginTop = `${currentY * 7}px`;
-
       requestAnimationFrame(animateParallax);
     }
 
     animateParallax();
-  </script>
 
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function randInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function getGhostSize() {
+      if (window.innerWidth <= 768) return { w: 160, h: 320 };
+      if (window.innerWidth <= 1024) return { w: 240, h: 480 };
+      return { w: 320, h: 640 };
+    }
+
+    function getSafeZones() {
+      if (window.innerWidth <= 768) {
+        return {
+          leftZone: { x1: 6, x2: 20 },
+          rightZone: { x1: 78, x2: 92 },
+          y1: 18,
+          y2: 62
+        };
+      }
+
+      if (window.innerWidth <= 1024) {
+        return {
+          leftZone: { x1: 8, x2: 25 },
+          rightZone: { x1: 74, x2: 90 },
+          y1: 14,
+          y2: 64
+        };
+      }
+
+      return {
+        leftZone: { x1: 10, x2: 27 },
+        rightZone: { x1: 73, x2: 89 },
+        y1: 12,
+        y2: 66
+      };
+    }
+
+    function pickGhostPlacement() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const size = getGhostSize();
+      const zones = getSafeZones();
+
+      const useLeft = Math.random() < 0.5;
+      const zone = useLeft ? zones.leftZone : zones.rightZone;
+
+      const xPercent = rand(zone.x1, zone.x2);
+      const yPercent = rand(zones.y1, zones.y2);
+
+      return {
+        x: (vw * xPercent / 100) - size.w / 2,
+        y: (vh * yPercent / 100) - size.h / 2,
+        side: useLeft ? "left" : "right"
+      };
+    }
+
+    function setGhostMood() {
+      const blur = rand(24, 34);
+      const peak = rand(0.20, 0.38);
+      const scale = rand(0.94, 1.05);
+
+      ghost.dataset.peak = peak.toFixed(3);
+      ghost.dataset.scale = scale.toFixed(3);
+      ghost.style.filter = `blur(${blur.toFixed(1)}px)`;
+
+      const blobs = ghost.querySelectorAll(".blob");
+      blobs.forEach((blob, i) => {
+        const extra = 0.82 + Math.random() * 0.28;
+        blob.style.opacity = extra.toFixed(2);
+
+        const shiftX = rand(-10, 10);
+        const shiftY = rand(-8, 8);
+        blob.style.transform = `translate(${shiftX.toFixed(1)}px, ${shiftY.toFixed(1)}px)`;
+      });
+    }
+
+    function animateGhostInstance() {
+      return new Promise(resolve => {
+        const { x, y, side } = pickGhostPlacement();
+        setGhostMood();
+
+        ghost.style.left = `${x}px`;
+        ghost.style.top = `${y}px`;
+
+        const appearsFast = Math.random() < 0.30;
+        const appearDuration = appearsFast ? rand(250, 500) : rand(1800, 3400);
+        const holdDuration = rand(700, 1800);
+        const fadeDuration = rand(2200, 4200);
+
+        const driftMainX = side === "left" ? rand(20, 70) : rand(-70, -20);
+        const driftMainY = rand(-12, 14);
+
+        const sideSwayA = rand(6, 16);
+        const sideSwayB = rand(4, 14);
+        const verticalBreath = rand(3, 9);
+
+        const peakOpacity = parseFloat(ghost.dataset.peak || "0.3");
+        const baseScale = parseFloat(ghost.dataset.scale || "1");
+
+        const startTime = performance.now();
+        const total = appearDuration + holdDuration + fadeDuration;
+
+        function frame(now) {
+          const elapsed = now - startTime;
+          const t = Math.min(elapsed / total, 1);
+
+          let opacity = 0;
+          let progress = 0;
+
+          if (elapsed <= appearDuration) {
+            const p = elapsed / appearDuration;
+            opacity = peakOpacity * easeOutCubic(p);
+            progress = 0.25 * p;
+          } else if (elapsed <= appearDuration + holdDuration) {
+            const p = (elapsed - appearDuration) / holdDuration;
+            opacity = peakOpacity * (0.96 + Math.sin(p * Math.PI * 2) * 0.04);
+            progress = 0.25 + 0.15 * p;
+          } else {
+            const p = (elapsed - appearDuration - holdDuration) / fadeDuration;
+            opacity = peakOpacity * (1 - easeInOutQuad(p));
+            progress = 0.40 + 0.60 * p;
+          }
+
+          const life = t * Math.PI * 2.2;
+          const moveX =
+            driftMainX * progress +
+            Math.sin(life * 0.8) * sideSwayA +
+            Math.sin(life * 1.7) * sideSwayB * 0.45;
+
+          const moveY =
+            driftMainY * progress +
+            Math.sin(life * 1.2) * verticalBreath;
+
+          const scale =
+            baseScale +
+            Math.sin(life * 0.7) * 0.012;
+
+          ghost.style.opacity = opacity.toFixed(3);
+          ghostInner.style.transform =
+            `translate(${moveX.toFixed(2)}px, ${moveY.toFixed(2)}px) scale(${scale.toFixed(3)})`;
+
+          if (elapsed < total) {
+            requestAnimationFrame(frame);
+          } else {
+            ghost.style.opacity = "0";
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(frame);
+      });
+    }
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+
+    function easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    async function ghostLoop() {
+      while (true) {
+        await sleep(randInt(1200, 5200));
+        await animateGhostInstance();
+        await sleep(randInt(500, 2200));
+      }
+    }
+
+    ghostLoop();
+  </script>
 </body>
 </html>
