@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Fog</title>
+  <title>Sezam</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -37,42 +37,32 @@
       z-index: 0;
     }
 
-    .overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.16);
-      z-index: 1;
-      pointer-events: none;
-    }
-
     .ghost-layer {
       position: fixed;
       inset: 0;
-      z-index: 2;
+      z-index: 1;
       pointer-events: none;
       overflow: hidden;
     }
 
-    /* Общий контейнер тени */
     .ghost {
       position: absolute;
       left: 0;
       top: 0;
-      width: 320px;
-      height: 640px;
+      width: 440px;
+      height: 860px;
       opacity: 0;
-      filter: blur(26px);
       will-change: transform, opacity, filter;
+      filter: blur(42px);
       mix-blend-mode: multiply;
     }
 
     .ghost-inner {
       position: absolute;
       inset: 0;
-      will-change: transform, opacity;
+      will-change: transform;
     }
 
-    /* Силуэт не "человек из деталей", а облачная фигура */
     .ghost-shape {
       position: absolute;
       inset: 0;
@@ -82,98 +72,108 @@
       position: absolute;
       border-radius: 50%;
       background: rgba(7, 10, 14, 0.78);
-      filter: blur(30px);
+      filter: blur(48px);
       transform: translateZ(0);
     }
 
-    /* Верх */
     .blob-1 {
-      left: 104px;
-      top: 34px;
-      width: 96px;
-      height: 118px;
-      background: rgba(6, 9, 13, 0.72);
-      filter: blur(24px);
-    }
-
-    /* Волосы/аура сверху */
-    .blob-2 {
-      left: 82px;
-      top: 18px;
-      width: 144px;
-      height: 170px;
-      background: rgba(4, 7, 11, 0.52);
-      filter: blur(38px);
-    }
-
-    /* Плечи */
-    .blob-3 {
-      left: 46px;
-      top: 126px;
-      width: 224px;
-      height: 124px;
-      background: rgba(7, 10, 14, 0.64);
+      left: 146px;
+      top: 44px;
+      width: 118px;
+      height: 138px;
+      background: rgba(7, 10, 14, 0.68);
       filter: blur(34px);
     }
 
-    /* Торс */
-    .blob-4 {
-      left: 72px;
-      top: 182px;
-      width: 176px;
-      height: 230px;
-      background: rgba(6, 9, 13, 0.72);
-      filter: blur(32px);
+    .blob-2 {
+      left: 104px;
+      top: 16px;
+      width: 196px;
+      height: 222px;
+      background: rgba(4, 7, 11, 0.48);
+      filter: blur(60px);
     }
 
-    /* Нижняя масса */
-    .blob-5 {
+    .blob-3 {
       left: 50px;
-      top: 322px;
-      width: 220px;
-      height: 236px;
+      top: 154px;
+      width: 320px;
+      height: 154px;
+      background: rgba(7, 10, 14, 0.62);
+      filter: blur(50px);
+    }
+
+    .blob-4 {
+      left: 100px;
+      top: 232px;
+      width: 232px;
+      height: 310px;
+      background: rgba(6, 9, 13, 0.72);
+      filter: blur(46px);
+    }
+
+    .blob-5 {
+      left: 74px;
+      top: 430px;
+      width: 286px;
+      height: 306px;
       background: rgba(5, 8, 12, 0.62);
-      filter: blur(40px);
+      filter: blur(62px);
     }
 
-    /* Левый дым */
     .blob-6 {
-      left: 18px;
-      top: 168px;
-      width: 108px;
-      height: 250px;
-      background: rgba(5, 8, 12, 0.44);
-      filter: blur(42px);
+      left: 10px;
+      top: 230px;
+      width: 154px;
+      height: 320px;
+      background: rgba(5, 8, 12, 0.40);
+      filter: blur(68px);
     }
 
-    /* Правый дым */
     .blob-7 {
-      right: 18px;
-      top: 176px;
-      width: 108px;
-      height: 238px;
-      background: rgba(5, 8, 12, 0.42);
-      filter: blur(42px);
+      right: 10px;
+      top: 240px;
+      width: 154px;
+      height: 306px;
+      background: rgba(5, 8, 12, 0.40);
+      filter: blur(68px);
     }
 
-    /* Внутреннее затемнение */
     .blob-8 {
-      left: 112px;
-      top: 170px;
-      width: 92px;
-      height: 250px;
-      background: rgba(0, 0, 0, 0.34);
-      filter: blur(32px);
+      left: 154px;
+      top: 226px;
+      width: 110px;
+      height: 314px;
+      background: rgba(0, 0, 0, 0.30);
+      filter: blur(46px);
     }
 
-    /* Нижний хвост/растворение */
     .blob-9 {
-      left: 88px;
-      top: 438px;
-      width: 150px;
-      height: 142px;
-      background: rgba(4, 6, 10, 0.34);
-      filter: blur(44px);
+      left: 130px;
+      top: 600px;
+      width: 176px;
+      height: 136px;
+      background: rgba(4, 6, 10, 0.24);
+      filter: blur(62px);
+    }
+
+    .woman-layer {
+      position: fixed;
+      inset: -20px;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+      background: url("images/woman-cutout.webp") no-repeat center center;
+      background-size: cover;
+      will-change: transform;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.10);
+      z-index: 3;
+      pointer-events: none;
     }
 
     .email {
@@ -209,20 +209,20 @@
 
     @media (max-width: 1024px) {
       .ghost {
-        width: 240px;
-        height: 480px;
-        filter: blur(22px);
+        width: 320px;
+        height: 620px;
+        filter: blur(34px);
       }
 
-      .blob-1 { left: 78px; top: 26px; width: 70px; height: 86px; }
-      .blob-2 { left: 58px; top: 12px; width: 106px; height: 126px; }
-      .blob-3 { left: 34px; top: 94px; width: 170px; height: 92px; }
-      .blob-4 { left: 54px; top: 138px; width: 130px; height: 174px; }
-      .blob-5 { left: 34px; top: 246px; width: 172px; height: 176px; }
-      .blob-6 { left: 8px; top: 126px; width: 78px; height: 182px; }
-      .blob-7 { right: 8px; top: 130px; width: 78px; height: 176px; }
-      .blob-8 { left: 84px; top: 128px; width: 66px; height: 190px; }
-      .blob-9 { left: 66px; top: 324px; width: 108px; height: 106px; }
+      .blob-1 { left: 106px; top: 30px; width: 84px; height: 98px; }
+      .blob-2 { left: 76px; top: 10px; width: 140px; height: 156px; }
+      .blob-3 { left: 34px; top: 110px; width: 226px; height: 108px; }
+      .blob-4 { left: 72px; top: 166px; width: 164px; height: 214px; }
+      .blob-5 { left: 50px; top: 314px; width: 210px; height: 224px; }
+      .blob-6 { left: 4px; top: 166px; width: 110px; height: 218px; }
+      .blob-7 { right: 4px; top: 170px; width: 110px; height: 214px; }
+      .blob-8 { left: 110px; top: 164px; width: 78px; height: 218px; }
+      .blob-9 { left: 92px; top: 440px; width: 120px; height: 90px; }
 
       .email {
         right: 40px;
@@ -236,20 +236,20 @@
 
     @media (max-width: 768px) {
       .ghost {
-        width: 160px;
-        height: 320px;
-        filter: blur(18px);
+        width: 200px;
+        height: 390px;
+        filter: blur(24px);
       }
 
-      .blob-1 { left: 52px; top: 18px; width: 46px; height: 58px; }
-      .blob-2 { left: 38px; top: 8px; width: 72px; height: 84px; }
-      .blob-3 { left: 22px; top: 62px; width: 114px; height: 60px; }
-      .blob-4 { left: 36px; top: 92px; width: 88px; height: 114px; }
-      .blob-5 { left: 22px; top: 164px; width: 116px; height: 120px; }
-      .blob-6 { left: 6px; top: 84px; width: 50px; height: 120px; }
-      .blob-7 { right: 6px; top: 86px; width: 50px; height: 120px; }
-      .blob-8 { left: 56px; top: 84px; width: 44px; height: 124px; }
-      .blob-9 { left: 48px; top: 218px; width: 70px; height: 64px; }
+      .blob-1 { left: 66px; top: 18px; width: 54px; height: 62px; }
+      .blob-2 { left: 48px; top: 6px; width: 86px; height: 96px; }
+      .blob-3 { left: 18px; top: 68px; width: 140px; height: 66px; }
+      .blob-4 { left: 42px; top: 102px; width: 104px; height: 138px; }
+      .blob-5 { left: 28px; top: 188px; width: 134px; height: 142px; }
+      .blob-6 { left: 0px; top: 100px; width: 68px; height: 142px; }
+      .blob-7 { right: 0px; top: 104px; width: 68px; height: 138px; }
+      .blob-8 { left: 68px; top: 100px; width: 50px; height: 140px; }
+      .blob-9 { left: 58px; top: 274px; width: 82px; height: 58px; }
 
       .email {
         right: 20px;
@@ -265,7 +265,6 @@
 <body>
   <div class="scene">
     <div class="bg" id="bg"></div>
-    <div class="overlay"></div>
 
     <div class="ghost-layer">
       <div class="ghost" id="ghost">
@@ -285,6 +284,10 @@
       </div>
     </div>
 
+    <div class="woman-layer" id="womanCutout"></div>
+
+    <div class="overlay"></div>
+
     <div class="email" id="email">
       <a href="mailto:sezam3@ya.ru">
         <img src="images/contact.webp" alt="sezam3@ya.ru">
@@ -297,6 +300,7 @@
     const email = document.getElementById("email");
     const ghost = document.getElementById("ghost");
     const ghostInner = document.getElementById("ghostInner");
+    const womanCutout = document.getElementById("womanCutout");
 
     let mouseX = 0;
     let mouseY = 0;
@@ -313,6 +317,7 @@
       currentY += (mouseY - currentY) * 0.05;
 
       bg.style.transform = `translate(${currentX * 8}px, ${currentY * 8}px) scale(1.02)`;
+      womanCutout.style.transform = `translate(${currentX * 4}px, ${currentY * 4}px) scale(1.02)`;
       email.style.transform = `translate(${currentX * 14}px, ${currentY * 14}px)`;
 
       requestAnimationFrame(animateParallax);
@@ -333,99 +338,74 @@
     }
 
     function getGhostSize() {
-      if (window.innerWidth <= 768) return { w: 160, h: 320 };
-      if (window.innerWidth <= 1024) return { w: 240, h: 480 };
-      return { w: 320, h: 640 };
+      if (window.innerWidth <= 768) return { w: 200, h: 390 };
+      if (window.innerWidth <= 1024) return { w: 320, h: 620 };
+      return { w: 440, h: 860 };
     }
 
-    function getSafeZones() {
-      if (window.innerWidth <= 768) {
-        return {
-          leftZone: { x1: 6, x2: 20 },
-          rightZone: { x1: 78, x2: 92 },
-          y1: 18,
-          y2: 62
-        };
-      }
-
-      if (window.innerWidth <= 1024) {
-        return {
-          leftZone: { x1: 8, x2: 25 },
-          rightZone: { x1: 74, x2: 90 },
-          y1: 14,
-          y2: 64
-        };
-      }
-
-      return {
-        leftZone: { x1: 10, x2: 27 },
-        rightZone: { x1: 73, x2: 89 },
-        y1: 12,
-        y2: 66
-      };
-    }
-
-    function pickGhostPlacement() {
+    function getPlacement() {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const size = getGhostSize();
-      const zones = getSafeZones();
 
-      const useLeft = Math.random() < 0.5;
-      const zone = useLeft ? zones.leftZone : zones.rightZone;
+      const isLeft = Math.random() < 0.5;
+      let xPercent;
+      let yPercent;
 
-      const xPercent = rand(zone.x1, zone.x2);
-      const yPercent = rand(zones.y1, zones.y2);
+      if (window.innerWidth <= 768) {
+        xPercent = isLeft ? rand(18, 30) : rand(70, 82);
+        yPercent = rand(18, 58);
+      } else if (window.innerWidth <= 1024) {
+        xPercent = isLeft ? rand(18, 32) : rand(68, 82);
+        yPercent = rand(14, 60);
+      } else {
+        xPercent = isLeft ? rand(18, 34) : rand(66, 82);
+        yPercent = rand(12, 62);
+      }
 
       return {
         x: (vw * xPercent / 100) - size.w / 2,
         y: (vh * yPercent / 100) - size.h / 2,
-        side: useLeft ? "left" : "right"
+        side: isLeft ? "left" : "right"
       };
     }
 
     function setGhostMood() {
-      const blur = rand(24, 34);
-      const peak = rand(0.20, 0.38);
-      const scale = rand(0.94, 1.05);
+      const blur = rand(34, 48);
+      const peak = rand(0.28, 0.48);
+      const scale = rand(1.08, 1.24);
 
       ghost.dataset.peak = peak.toFixed(3);
       ghost.dataset.scale = scale.toFixed(3);
       ghost.style.filter = `blur(${blur.toFixed(1)}px)`;
 
       const blobs = ghost.querySelectorAll(".blob");
-      blobs.forEach((blob, i) => {
-        const extra = 0.82 + Math.random() * 0.28;
-        blob.style.opacity = extra.toFixed(2);
-
-        const shiftX = rand(-10, 10);
-        const shiftY = rand(-8, 8);
-        blob.style.transform = `translate(${shiftX.toFixed(1)}px, ${shiftY.toFixed(1)}px)`;
+      blobs.forEach(blob => {
+        blob.style.opacity = (0.90 + Math.random() * 0.26).toFixed(2);
+        blob.style.transform = `translate(${rand(-14, 14).toFixed(1)}px, ${rand(-10, 10).toFixed(1)}px)`;
       });
     }
 
-    function animateGhostInstance() {
+    function animateGhostSlow() {
       return new Promise(resolve => {
-        const { x, y, side } = pickGhostPlacement();
+        const { x, y, side } = getPlacement();
         setGhostMood();
 
         ghost.style.left = `${x}px`;
         ghost.style.top = `${y}px`;
 
-        const appearsFast = Math.random() < 0.30;
-        const appearDuration = appearsFast ? rand(250, 500) : rand(1800, 3400);
+        const appearDuration = rand(1800, 3400);
         const holdDuration = rand(700, 1800);
         const fadeDuration = rand(2200, 4200);
 
-        const driftMainX = side === "left" ? rand(20, 70) : rand(-70, -20);
+        const driftMainX = side === "left" ? rand(18, 58) : rand(-58, -18);
         const driftMainY = rand(-12, 14);
-
         const sideSwayA = rand(6, 16);
         const sideSwayB = rand(4, 14);
         const verticalBreath = rand(3, 9);
 
-        const peakOpacity = parseFloat(ghost.dataset.peak || "0.3");
-        const baseScale = parseFloat(ghost.dataset.scale || "1");
+        const peakOpacity = parseFloat(ghost.dataset.peak || "0.36");
+        const baseScale = parseFloat(ghost.dataset.scale || "1.12");
 
         const startTime = performance.now();
         const total = appearDuration + holdDuration + fadeDuration;
@@ -461,15 +441,78 @@
             driftMainY * progress +
             Math.sin(life * 1.2) * verticalBreath;
 
-          const scale =
-            baseScale +
-            Math.sin(life * 0.7) * 0.012;
+          const scale = baseScale + Math.sin(life * 0.7) * 0.014;
 
           ghost.style.opacity = opacity.toFixed(3);
           ghostInner.style.transform =
             `translate(${moveX.toFixed(2)}px, ${moveY.toFixed(2)}px) scale(${scale.toFixed(3)})`;
 
           if (elapsed < total) {
+            requestAnimationFrame(frame);
+          } else {
+            ghost.style.opacity = "0";
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(frame);
+      });
+    }
+
+    function animateGhostDash() {
+      return new Promise(resolve => {
+        const size = getGhostSize();
+        setGhostMood();
+
+        const fromLeft = Math.random() < 0.5;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+
+        let startX, endX, baseY;
+
+        if (fromLeft) {
+          startX = -size.w * 0.9;
+          endX = vw + size.w * 0.2;
+        } else {
+          startX = vw + size.w * 0.2;
+          endX = -size.w * 0.9;
+        }
+
+        if (window.innerWidth <= 768) {
+          baseY = vh * rand(0.20, 0.52);
+        } else if (window.innerWidth <= 1024) {
+          baseY = vh * rand(0.16, 0.56);
+        } else {
+          baseY = vh * rand(0.14, 0.60);
+        }
+
+        const diag = rand(-80, 80);
+        const duration = rand(700, 1200);
+        const peakOpacity = rand(0.18, 0.32);
+        const baseScale = rand(1.02, 1.18);
+
+        ghost.style.left = `${startX}px`;
+        ghost.style.top = `${baseY - size.h / 2}px`;
+
+        const startTime = performance.now();
+
+        function frame(now) {
+          const elapsed = now - startTime;
+          const p = Math.min(elapsed / duration, 1);
+
+          const x = startX + (endX - startX) * easeInOutQuad(p);
+          const y = (baseY - size.h / 2) + diag * p;
+          const opacity = Math.sin(p * Math.PI) * peakOpacity;
+          const wobbleX = Math.sin(p * Math.PI * 4) * 8;
+          const wobbleY = Math.sin(p * Math.PI * 3) * 4;
+
+          ghost.style.left = `${x}px`;
+          ghost.style.top = `${y}px`;
+          ghost.style.opacity = opacity.toFixed(3);
+          ghostInner.style.transform =
+            `translate(${wobbleX.toFixed(2)}px, ${wobbleY.toFixed(2)}px) scale(${(baseScale + Math.sin(p * Math.PI) * 0.03).toFixed(3)})`;
+
+          if (elapsed < duration) {
             requestAnimationFrame(frame);
           } else {
             ghost.style.opacity = "0";
@@ -492,7 +535,14 @@
     async function ghostLoop() {
       while (true) {
         await sleep(randInt(1200, 5200));
-        await animateGhostInstance();
+
+        const dashChance = 0.22;
+        if (Math.random() < dashChance) {
+          await animateGhostDash();
+        } else {
+          await animateGhostSlow();
+        }
+
         await sleep(randInt(500, 2200));
       }
     }
