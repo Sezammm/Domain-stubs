@@ -165,8 +165,8 @@
       position: absolute;
       left: 0;
       top: 0;
-      width: 320px;
-      height: 420px;
+      width: 280px;
+      height: 368px;
       opacity: 0;
       pointer-events: none;
       mix-blend-mode: screen;
@@ -206,17 +206,17 @@
     }
 
     .hand-aura-1 {
-      left: 70px;
-      top: 70px;
-      width: 210px;
-      height: 250px;
+      left: 58px;
+      top: 58px;
+      width: 184px;
+      height: 218px;
     }
 
     .hand-aura-2 {
-      left: 40px;
-      top: 170px;
-      width: 240px;
-      height: 210px;
+      left: 34px;
+      top: 148px;
+      width: 208px;
+      height: 184px;
     }
 
     .dragon-face {
@@ -260,6 +260,40 @@
       background: rgba(0, 0, 0, 0.10);
       z-index: 3;
       pointer-events: none;
+    }
+
+    .glass-shock {
+      position: fixed;
+      inset: 0;
+      z-index: 3.2;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(circle at center,
+          rgba(255,255,255,0.16) 0%,
+          rgba(255,255,255,0.10) 10%,
+          rgba(255,255,255,0.05) 18%,
+          rgba(255,255,255,0.00) 30%);
+      mix-blend-mode: screen;
+      will-change: transform, opacity, filter, background;
+      filter: blur(0px);
+    }
+
+    .impact-flash {
+      position: fixed;
+      inset: 0;
+      z-index: 3.35;
+      pointer-events: none;
+      opacity: 0;
+      background:
+        radial-gradient(circle at center,
+          rgba(255,255,255,0.96) 0%,
+          rgba(255,255,255,0.52) 18%,
+          rgba(255,255,255,0.18) 34%,
+          rgba(255,255,255,0.00) 58%);
+      mix-blend-mode: screen;
+      will-change: opacity, filter, background;
+      filter: blur(0px);
     }
 
     .email {
@@ -311,22 +345,22 @@
       .blob-9 { left: 92px; top: 440px; width: 120px; height: 90px; }
 
       .hand-slam {
-        width: 250px;
-        height: 330px;
+        width: 220px;
+        height: 290px;
       }
 
       .hand-aura-1 {
-        left: 50px;
-        top: 48px;
-        width: 148px;
-        height: 176px;
+        left: 44px;
+        top: 40px;
+        width: 130px;
+        height: 154px;
       }
 
       .hand-aura-2 {
-        left: 26px;
-        top: 122px;
-        width: 170px;
-        height: 152px;
+        left: 22px;
+        top: 106px;
+        width: 148px;
+        height: 132px;
       }
 
       .dragon-face {
@@ -362,22 +396,22 @@
       .blob-9 { left: 58px; top: 274px; width: 82px; height: 58px; }
 
       .hand-slam {
-        width: 170px;
-        height: 225px;
+        width: 150px;
+        height: 198px;
       }
 
       .hand-aura-1 {
-        left: 34px;
-        top: 30px;
-        width: 96px;
-        height: 114px;
+        left: 30px;
+        top: 26px;
+        width: 84px;
+        height: 100px;
       }
 
       .hand-aura-2 {
-        left: 18px;
-        top: 82px;
-        width: 112px;
-        height: 100px;
+        left: 16px;
+        top: 72px;
+        width: 98px;
+        height: 88px;
       }
 
       .dragon-face {
@@ -433,6 +467,9 @@
     <div class="woman-layer" id="womanCutout"></div>
 
     <div class="overlay"></div>
+    <div class="glass-shock" id="glassShock"></div>
+    <div class="impact-flash" id="impactFlash"></div>
+    <audio id="handHitSound" src="sounds/hand-hit.mp3" preload="auto"></audio>
 
     <div class="email" id="email">
       <a href="mailto:sezam3@ya.ru">
@@ -451,6 +488,9 @@
     const handSlam = document.getElementById("handSlam");
     const handInner = document.getElementById("handInner");
     const dragonFace = document.getElementById("dragonFace");
+    const glassShock = document.getElementById("glassShock");
+    const impactFlash = document.getElementById("impactFlash");
+    const handHitSound = document.getElementById("handHitSound");
 
     let mouseX = 0;
     let mouseY = 0;
@@ -495,7 +535,7 @@
       return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
     }
 
-    function shakeScene(intensity = 10, duration = 320) {
+    function shakeScene(intensity = 16, duration = 460) {
       return new Promise(resolve => {
         const start = performance.now();
 
@@ -505,10 +545,13 @@
           const falloff = 1 - p;
 
           const x = (Math.random() * 2 - 1) * intensity * falloff;
-          const y = (Math.random() * 2 - 1) * intensity * 0.8 * falloff;
-          const rot = (Math.random() * 2 - 1) * 0.45 * falloff;
+          const y = (Math.random() * 2 - 1) * intensity * 0.9 * falloff;
+          const rot = (Math.random() * 2 - 1) * 0.65 * falloff;
+          const scaleX = 1 + 0.010 * falloff;
+          const scaleY = 1 - 0.006 * falloff;
 
-          scene.style.transform = `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${rot.toFixed(3)}deg)`;
+          scene.style.transform =
+            `translate(${x.toFixed(2)}px, ${y.toFixed(2)}px) rotate(${rot.toFixed(3)}deg) scale(${scaleX.toFixed(4)}, ${scaleY.toFixed(4)})`;
 
           if (p < 1) {
             requestAnimationFrame(frame);
@@ -520,6 +563,93 @@
 
         requestAnimationFrame(frame);
       });
+    }
+
+    function glassImpactPulse(hitX, hitY, power = 1, duration = 460) {
+      return new Promise(resolve => {
+        const start = performance.now();
+
+        function frame(now) {
+          const elapsed = now - start;
+          const p = Math.min(elapsed / duration, 1);
+          const e = easeOutCubic(p);
+
+          const ring = 14 + e * (52 + power * 10);
+          const fade = 1 - p;
+
+          glassShock.style.opacity = (0.62 * fade * power).toFixed(3);
+          glassShock.style.background = `
+            radial-gradient(circle at ${hitX}px ${hitY}px,
+              rgba(255,255,255,${(0.34 * fade * power).toFixed(3)}) 0px,
+              rgba(255,255,255,${(0.24 * fade * power).toFixed(3)}) ${ring}px,
+              rgba(255,255,255,${(0.14 * fade * power).toFixed(3)}) ${ring + 26}px,
+              rgba(255,255,255,${(0.08 * fade * power).toFixed(3)}) ${ring + 58}px,
+              rgba(255,255,255,0) ${ring + 92}px)
+          `;
+          glassShock.style.transform = `scale(${(1 + e * (0.03 + power * 0.01)).toFixed(4)})`;
+          glassShock.style.filter = `blur(${(e * (2.8 + power)).toFixed(2)}px)`;
+
+          if (p < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            glassShock.style.opacity = "0";
+            glassShock.style.transform = "";
+            glassShock.style.filter = "";
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(frame);
+      });
+    }
+
+    function impactFlashPulse(hitX, hitY, power = 1.0, duration = 180) {
+      return new Promise(resolve => {
+        const start = performance.now();
+
+        function frame(now) {
+          const elapsed = now - start;
+          const p = Math.min(elapsed / duration, 1);
+          const e = easeOutCubic(p);
+          const fade = 1 - p;
+          const size1 = 40 + e * (90 + power * 40);
+          const size2 = 120 + e * (140 + power * 60);
+
+          impactFlash.style.opacity = (0.82 * fade * power).toFixed(3);
+          impactFlash.style.background = `
+            radial-gradient(circle at ${hitX}px ${hitY}px,
+              rgba(255,255,255,${(0.96 * fade * power).toFixed(3)}) 0px,
+              rgba(255,255,255,${(0.68 * fade * power).toFixed(3)}) ${size1}px,
+              rgba(255,255,255,${(0.22 * fade * power).toFixed(3)}) ${size2}px,
+              rgba(255,255,255,0) ${size2 + 120}px)
+          `;
+          impactFlash.style.filter = `blur(${(1.2 + e * 4.4).toFixed(2)}px)`;
+
+          if (p < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            impactFlash.style.opacity = "0";
+            impactFlash.style.filter = "";
+            resolve();
+          }
+        }
+
+        requestAnimationFrame(frame);
+      });
+    }
+
+    function playHandHitSound(volume = 0.55, playbackRate = 1) {
+      if (!handHitSound || !handHitSound.src) return;
+
+      try {
+        const sound = new Audio(handHitSound.currentSrc || handHitSound.src);
+        sound.volume = Math.max(0, Math.min(1, volume));
+        sound.playbackRate = playbackRate;
+        sound.preservesPitch = false;
+        sound.play().catch(() => {});
+      } catch (error) {
+        // Без звука, если браузер заблокировал autoplay или файл еще не добавлен.
+      }
     }
 
     function getGhostSize() {
@@ -711,14 +841,14 @@
 
         let handW, handH;
         if (window.innerWidth <= 768) {
-          handW = 170;
-          handH = 225;
+          handW = 150;
+          handH = 198;
         } else if (window.innerWidth <= 1024) {
-          handW = 250;
-          handH = 330;
+          handW = 220;
+          handH = 290;
         } else {
-          handW = 320;
-          handH = 420;
+          handW = 280;
+          handH = 368;
         }
 
         const baseX = fromLeft ? vw * rand(0.08, 0.20) : vw * rand(0.72, 0.86);
@@ -726,17 +856,26 @@
 
         const slamInX = fromLeft ? -rand(120, 175) : rand(120, 175);
 
-        const hitDuration = rand(170, 240);
-        const holdDuration = rand(180, 360);
-        const meltDuration = rand(1300, 1900);
-        const total = hitDuration + holdDuration + meltDuration;
+        const introDuration = rand(180, 240);
+
+        const hit1Time = introDuration;
+        const hit2Time = hit1Time + rand(620, 780);
+        const hit3Time = hit2Time + rand(620, 780);
+
+        const meltStart = hit3Time + rand(260, 420);
+        const meltDuration = rand(1400, 1900);
+        const total = meltStart + meltDuration;
 
         const peakOpacity = rand(0.34, 0.46);
 
-        const driftDown = rand(70, 120);
-        const driftSide = fromLeft ? rand(6, 16) : rand(-16, -6);
+        const driftDown = rand(90, 135);
+        const driftSide = fromLeft ? rand(8, 18) : rand(-18, -8);
 
-        let shakeTriggered = false;
+        const impactY = baseY - handH * 0.10;
+
+        let hit1Done = false;
+        let hit2Done = false;
+        let hit3Done = false;
 
         handSlam.style.left = `${baseX - handW / 2}px`;
         handSlam.style.top = `${baseY - handH / 2}px`;
@@ -745,61 +884,115 @@
         handSlam.style.filter = `blur(${rand(7, 9).toFixed(1)}px) brightness(0.92) contrast(1.02)`;
 
         handInner.style.transform = fromLeft
-          ? `translate(${slamInX}px, 24px) scale(0.66)`
-          : `translate(${slamInX}px, 24px) scale(0.66) rotateY(180deg)`;
+          ? `translate(${slamInX}px, 24px) scale(0.62)`
+          : `translate(${slamInX}px, 24px) scale(0.62) rotateY(180deg)`;
 
         const startTime = performance.now();
+
+        function impactKick(elapsed, centerTime, ampX = 10, ampY = 12, compress = 0.05, stretch = 0.08) {
+          const d = Math.abs(elapsed - centerTime);
+          if (d > 130) return { x: 0, y: 0, sx: 0, sy: 0, blur: 0 };
+          const p = 1 - d / 130;
+          return {
+            x: (fromLeft ? -1 : 1) * Math.sin(p * Math.PI) * ampX * 0.35,
+            y: Math.sin(p * Math.PI) * ampY,
+            sx: -Math.sin(p * Math.PI) * compress,
+            sy: Math.sin(p * Math.PI) * stretch,
+            blur: Math.sin(p * Math.PI) * 2.8
+          };
+        }
 
         function frame(now) {
           const elapsed = now - startTime;
 
-          let opacity = 0;
+          let opacity = peakOpacity;
           let tx = 0;
           let ty = 0;
-          let scX = 1;
-          let scY = 1;
-          let blur = 8;
+          let scX = 1.02;
+          let scY = 1.02;
+          let blur = 7.2;
           let brightness = 0.92;
 
-          if (elapsed <= hitDuration) {
-            const p = elapsed / hitDuration;
+          if (elapsed <= introDuration) {
+            const p = elapsed / introDuration;
             const e = easeOutCubic(p);
 
             opacity = peakOpacity * e;
             tx = slamInX * (1 - e);
             ty = 24 * (1 - e);
-            scX = 0.66 + e * 0.40;
-            scY = 0.66 + e * 0.40;
-            blur = 9 - e * 2.5;
+            scX = 0.62 + e * 0.34;
+            scY = 0.62 + e * 0.34;
+            blur = 9 - e * 2.2;
+          } else if (elapsed < meltStart) {
+            const idleP = (elapsed - introDuration) / Math.max(1, meltStart - introDuration);
 
-            if (!shakeTriggered && p >= 0.82) {
-              shakeTriggered = true;
-              shakeScene(11, 340);
+            tx = Math.sin(idleP * Math.PI * 3.4) * 0.8;
+            ty = Math.sin(idleP * Math.PI * 2.3) * 0.7;
+            blur = 6.8;
+
+            let proximityX = 0.96;
+            let proximityY = 0.96;
+
+            if (elapsed >= hit1Time && elapsed < hit2Time) {
+              proximityX = 0.98;
+              proximityY = 0.99;
+            } else if (elapsed >= hit2Time && elapsed < hit3Time) {
+              proximityX = 1.02;
+              proximityY = 1.04;
+            } else if (elapsed >= hit3Time) {
+              proximityX = 1.06;
+              proximityY = 1.10;
             }
-          } else if (elapsed <= hitDuration + holdDuration) {
-            const p = (elapsed - hitDuration) / holdDuration;
 
-            opacity = peakOpacity * (0.99 + Math.sin(p * Math.PI) * 0.01);
-            tx = Math.sin(p * Math.PI * 2.2) * 0.8;
-            ty = Math.sin(p * Math.PI * 1.6) * 0.8;
-            scX = 1.06 - Math.sin(p * Math.PI) * 0.006;
-            scY = 1.06 + Math.sin(p * Math.PI) * 0.01;
-            blur = 6.5;
+            scX = proximityX + Math.sin(idleP * Math.PI * 2.0) * 0.006;
+            scY = proximityY - Math.sin(idleP * Math.PI * 2.0) * 0.004;
+
+            const k1 = impactKick(elapsed, hit1Time, 10, 10, 0.04, 0.06);
+            const k2 = impactKick(elapsed, hit2Time, 14, 14, 0.06, 0.09);
+            const k3 = impactKick(elapsed, hit3Time, 18, 18, 0.08, 0.12);
+
+            tx += k1.x + k2.x + k3.x;
+            ty += k1.y + k2.y + k3.y;
+            scX += k1.sx + k2.sx + k3.sx;
+            scY += k1.sy + k2.sy + k3.sy;
+            blur += k1.blur + k2.blur + k3.blur;
+
+            if (!hit1Done && elapsed >= hit1Time) {
+              hit1Done = true;
+              shakeScene(14, 360);
+              glassImpactPulse(baseX, impactY, 1.0, 420);
+              playHandHitSound(0.42, rand(0.97, 1.03));
+            }
+
+            if (!hit2Done && elapsed >= hit2Time) {
+              hit2Done = true;
+              shakeScene(20, 430);
+              glassImpactPulse(baseX, impactY, 1.25, 460);
+              playHandHitSound(0.50, rand(0.94, 1.01));
+            }
+
+            if (!hit3Done && elapsed >= hit3Time) {
+              hit3Done = true;
+              shakeScene(28, 520);
+              glassImpactPulse(baseX, impactY, 1.55, 520);
+              impactFlashPulse(baseX, impactY, 1.0, 170);
+              playHandHitSound(0.62, rand(0.90, 0.98));
+            }
           } else {
-            const p = (elapsed - hitDuration - holdDuration) / meltDuration;
-            const e = easeInOutQuad(p);
+            const p = (elapsed - meltStart) / meltDuration;
+            const e = easeInOutQuad(Math.min(p, 1));
 
             opacity = peakOpacity * (1 - e);
             tx = driftSide * e;
             ty = driftDown * e;
-            scX = 1.06 - e * 0.14;
-            scY = 1.06 + e * 0.20;
-            blur = 6.5 + e * 10;
-            brightness = 0.92 - e * 0.12;
+            scX = 1.04 - e * 0.18;
+            scY = 1.10 + e * 0.20;
+            blur = 8 + e * 12;
+            brightness = 0.92 - e * 0.16;
           }
 
-          handSlam.style.opacity = opacity.toFixed(3);
-          handSlam.style.filter = `blur(${blur.toFixed(2)}px) brightness(${brightness.toFixed(3)}) contrast(1.02)`;
+          handSlam.style.opacity = Math.max(0, opacity).toFixed(3);
+          handSlam.style.filter = `blur(${blur.toFixed(2)}px) brightness(${brightness.toFixed(3)}) contrast(1.03)`;
 
           const transformCore = fromLeft
             ? `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${scX.toFixed(3)}, ${scY.toFixed(3)})`
